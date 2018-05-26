@@ -62,6 +62,7 @@ class Basic extends Component {
     const { routes, match: { path }, user, history } = this.props;
     return (
       <div>
+        <GlobalHeader />        
         <GlobalNav />
         {routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)}
         {/* {path === '/' && <Redirect to="/home" />} */}

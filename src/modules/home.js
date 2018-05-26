@@ -2,7 +2,7 @@ import * as API from '../utils/api';
 
 const initialState = {
   tagList: [],
-  postList: []
+  pageList: []
 }
 
 export default (state = initialState, action) => {
@@ -12,10 +12,10 @@ export default (state = initialState, action) => {
         ...state,
         tagList: action.payload
       }
-    case 'SET_POST_LIST':
+    case 'SET_PAGE_LIST':
       return {
         ...state,
-        postList: action.payload
+        pageList: action.payload
       }
     default:
       return state
@@ -29,5 +29,15 @@ export const getTags = (dispatch, getState) => {
     .then(tagList => dispatch({
       type: 'SET_TAG_LIST',
       payload: tagList,
+    }));
+}
+
+export const getPages = (dispatch, getState) => {
+  // const email = getState().user.email;
+  const email = 'zhuyichen1017@gmail.com'
+  return API.getPages(email)
+    .then(list => dispatch({
+      type: 'SET_PAGE_LIST',
+      payload: list,
     }));
 }

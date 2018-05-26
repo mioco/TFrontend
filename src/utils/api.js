@@ -56,6 +56,11 @@ export async function getTags(email) {
   return $fetch(`${HOST}/user/getTags?email=${email}`);
 }
 
+export async function getPages(email) {
+  // return $fetch(`${HOST}/user/webpages?email=${email}`);
+  return require('../mock.json');
+}
+
 export async function removeSubscriptionUrl(id) {
   return $fetch(`${HOST}/user/removeSubscriptionUrl?id=${id}`);
 }

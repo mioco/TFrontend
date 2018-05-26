@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux'
 import { bindActionCreators } from 'redux'
-import GlobalHeader from '../../components/GlobalHeader';
 import PostList from '../../components/Postlist';
 import { getProfile, addSubscriptionUrl } from '../../modules/user';
 import './home.css';
@@ -77,8 +76,6 @@ class Profile extends Component {
     const { url, tempItem1, tempItem2, keywords } = this.state;
     return (
       <div>
-        <GlobalHeader />
-
         {urlList}
 
         <form>

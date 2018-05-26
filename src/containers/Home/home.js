@@ -2,51 +2,39 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux'
 import { bindActionCreators } from 'redux'
-import GlobalHeader from '../../components/GlobalHeader';
 import PostList from '../../components/Postlist';
-import { getTags } from '../../modules/home';
+import { getTags, getPages } from '../../modules/home';
 import './home.css';
 
-const data = [
-  {
-    title: 'Title1',
-    content: 'this is a post',
-    url: 'douban.com',
-    tags: ['a', 'b']
-  },
-  {
-    title: 'Title2',
-    content: 'this is a post',
-    url: 'douban.com',
-    tags: ['c']
-  }
-];
-
-const mapStateToProps = ({ user }) => ({
+const mapStateToProps = ({ user, home: { pageList, tagList } }) => ({
   user,
+  pageList,
+  tagList
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  getTags: () => getTags
+  getTags: () => getTags,
+  getPages: () => getPages,
 }, dispatch);
 
 class Home extends PureComponent {
+  componentWillMount() {
+    this.props.getPages()
+  }
 // const Home = ({ route, routing, user }) => {
   render() {
-    const { location: { hash }, user, getTags } = this.props;
+    const { location: { hash }, user, getTags, getPages, pageList } = this.props;
     const path = hash.replace('#', '');
-    path === 'topic' && user.email && getTags();
+    console.log(!path, path, pageList)
+    user.email && (path ? getTags() : null);
 
-    const postList = data.map(({ title, content, tags, url }, index) => (
-      <PostList key={index} title={title} content={content} tags={tags} url={url} />
-    ));
+    const postList = pageList.map((post, index) => <PostList key={index} post={post} />);
 
     
     const tagList = user.tagList && user.tagList.map(({ tag, id }) => <a key={id}>{tag}</a>)
   
     return (
-      <div className="App">
-        <GlobalHeader />
+      <div>
         <nav>
           <ul className="nav-bar">
             <li><a className={!path ? 'active' : ''} href="#">首页</a></li>

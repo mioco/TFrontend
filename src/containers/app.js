@@ -9,7 +9,8 @@ import ResetPasswd from './User/resetPasswd';
 import GlobalNav from '../components/GlobalNav';
 import User from './Layout/user';
 import Basic from './Layout/basic';
-// import Post from './Home/post';
+import Post from './Home/post';
+
 const routes = [
   {
     path: "/",
@@ -23,10 +24,10 @@ const routes = [
         path: "/profile",
         component: Profile
       },
-      // {
-      //   path: "/post/:id",
-      //   component: Post
-      // }
+      {
+        path: "/post/:id",
+        component: Post
+      }
     ]
   },
   {
@@ -46,7 +47,7 @@ const routes = [
 ];
 
 const RouteWithSubRoutes = route => (
-  <Route 
+  <Route
     path={route.path}
     render={props => (
       // pass the sub-routes down to keep nesting

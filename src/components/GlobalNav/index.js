@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import avatar from '../../assets/avatar.png';
 import { logout } from '../../modules/user';
 import { toggleNav } from '../../modules/global';
+import GlobalFooter from '../GlobalFooter';
 import './index.css';
 
 const mapStateToProps = ({ global }) => ({
@@ -33,6 +34,7 @@ const GlobalNav = props => {
         <li><Link to="/profile">个人中心</Link></li>
         <li><a onClick={logout}>注销</a></li>
       </ul>
+      <GlobalFooter />
     </div>
   );
 }

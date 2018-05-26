@@ -1,15 +1,26 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
 import './index.css';
  
-const PostList = ({title, content, url, tags}) => {
-  const tagNodes = tags.map(({ tag }, index) => <a key={index}>{tag}</a>)
+const PostList = ({ post }) => {
+  const { id, title, content, url, tagList } = post;
+  const tagNodes = tagList.map(({ tag }, index) => <a href={`#topic#tag=${id}`} key={index}>{tag}&nbsp;</a>)
+  const getContent = () => {
+    if (!content) {
+      return
+    }
+    const inner = content;
+    return {
+      __html: inner.includes('<img') ? inner.match(/<img[^>]+>/g)[0] : inner.slice(0, 50) + '...'
+    };
+  };
+  
   return (
     <div className="postList">
       <p>来自关键字：{tagNodes}</p>  
-      <h2>{ title }</h2>
-      <article>{ content }</article>
-      <footer>from: { url }</footer>
+      <h3><Link to={`/post/${id}`}>{ title }</Link></h3>
+      <article dangerouslySetInnerHTML={getContent()}></article>
+      <small>from: <a href={url}>{ url.slice(0, 30) }...</a></small>
     </div>
   );
 }

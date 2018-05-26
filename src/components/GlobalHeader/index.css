@@ -22,13 +22,14 @@ li {
   display: flex;
 }
 .App-header > div:last-child {
-  width: 2.5rem;
-  height: 2.5rem;
-  margin: auto 1rem;
+  width: 5rem;
+  height: 5rem;
+  margin: 1.5rem 1rem;
   background-image: url('../../assets/avatar.png');
   border-radius: 50%;
   background-size: cover;
   background-position: center;
+  box-shadow: 0 0 10px #00000030;
 }
 
 .App-title {

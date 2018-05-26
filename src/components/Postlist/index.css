@@ -1,6 +1,22 @@
 .postList {
-  box-shadow: 0 2px 4px #eee;
-  margin: 1rem;
+  box-shadow: 0 1px 5px #ddd;
+  margin: 1.5rem;
   padding: 1rem;
   background-color: #fff;
+}
+
+.postList p {
+  margin: 0;
+}
+
+.postList article {
+  margin-bottom: 1rem;
+}
+
+a[href] {
+  color: #6d7996;
+}
+
+.postList img {
+  width: 100%;
 }
