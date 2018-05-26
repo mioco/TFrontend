@@ -1,20 +1,12 @@
-import * as API from '../service/api';
+import { push } from 'react-router-redux'
+import * as API from '../utils/api';
 
-export const INCREMENT_REQUESTED = 'counter/INCREMENT_REQUESTED'
-export const INCREMENT = 'counter/INCREMENT'
-export const DECREMENT_REQUESTED = 'counter/DECREMENT_REQUESTED'
-export const DECREMENT = 'counter/DECREMENT'
-
-const initialState = {
-  user: null,
-}
-
-export default (state = initialState, action) => {
+export default (state = {}, action) => {
   switch (action.type) {
     case 'SET_USER':
+      console.log(action.payload)
       return {
-        ...state,
-        user: action.payload
+        ...action.payload
       }
     case 'GET_RESET_URL':
       return {
@@ -29,6 +21,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         user: {
+          ...state.user,
           urlList: [...state.user.urlList, action.payload]
         }
       }
@@ -36,7 +29,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         result: action.payload
-      }
+      } 
     default:
       return state
   }
@@ -51,9 +44,9 @@ export const login = (payload) => dispatch => {
     }));
 }
  
-export const logout = (email) => dispatch => {
-  return API.login(email)
-    .then(res => dispatch({
+export const logout = dispatch => {
+  return API.logout()
+    .then(() => dispatch({
       type: 'SET_USER',
       payload: null
     }));
@@ -61,12 +54,10 @@ export const logout = (email) => dispatch => {
 
 export const authority = dispatch => {
   return API.authority()
-    .then((res) => dispatch(
-      {
-        type: 'SET_USER',
-        payload: res
-      }
-    ));
+    .then((res) => {
+      dispatch({ type: 'SET_USER', payload: res })
+      dispatch(push('/home'));
+    });
 }
  
 export const register = (payload) => dispatch => {
@@ -98,7 +89,10 @@ export const removeSubscriptionUrl = (id) => dispatch => {
  
 export const getProfile = (dispatch, getState) => {
   const email = getState().user.email;
-  console.log('get', getState().user)
+  console.log(getState())
+  if (email) {
+    return
+  }
   return API.getProfile(email)
     .then(payload => dispatch({
       type: 'SET_USER',

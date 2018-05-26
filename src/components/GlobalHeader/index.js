@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { toggleNav } from '../../modules/global';
 import logo from '../../assets/logo.svg';
@@ -10,7 +9,7 @@ const mapStateToProps = state => ({
 })
  
 const mapDispatchToProps = dispatch => ({
-  toggleNav: () => dispatch(toggleNav())
+  toggleNav: () => dispatch(toggleNav)
 })
  
 class GlobalHeader extends Component {

@@ -8,15 +8,17 @@ import GlobalHeader from '../../components/GlobalHeader';
 import PostList from '../../components/Postlist';
 import GlobalNav from '../../components/GlobalNav';
 import { login, authority } from '../../modules/user';
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect, withRouter } from "react-router-dom";
+import { register } from '../../registerServiceWorker'
+
 const mapStateToProps = state => ({
-  authority: state.authority,
+  user: state.user,
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   login: () => dispatch(login()),
   authority: () => authority,
-  changePage: () => push('/about-us')
+  toLogin: () => push('/user/login')
 }, dispatch);
  
 const RouteWithSubRoutes = route => (
@@ -29,35 +31,44 @@ const RouteWithSubRoutes = route => (
   />
 );
 
-const Basic = ({ routes, match: { path }, user, history, authority }) => {
-  authority();
-  if (!user) {
-    // history.go('/user/login');
-    // return
+class Basic extends Component {
+  constructor(props) {
+    super(props);
   }
 
-  // let stompClient;
-  // const socket = new SockJS('http://118.25.188.125:8080/websock');
-  // stompClient = Stomp.over(socket);
-  // stompClient.connect(
-  //   {
-  //     email: user.email
-  //   },
-  //   function (frame) {
-  //     console.log('Connected: ' + frame);
-  //     stompClient.subscribe('/user/topic/greetings', function (greeting) {
-  //         console.log(greeting.body)
-  //     });
-  //   }
-  // );
+  componentDidMount() {
+    this.props.authority()
+      .then(() => {
+
+        let stompClient;
+        const socket = new SockJS('http://118.25.188.125:8080/websocket');
+        stompClient = Stomp.over(socket);
+        stompClient.connect(
+          {
+            email: this.props.user.email
+          },
+          function (frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/user/topic/greetings', function (greeting) {
+                console.log(greeting.body)
+            });
+          }
+        );
+      })  
+      .catch(() => this.props.toLogin());
+  }
+
+  render() {
+    const { routes, match: { path }, user, history } = this.props;
+    return (
+      <div>
+        <GlobalNav />
+        {routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)}
+        {/* {path === '/' && <Redirect to="/home" />} */}
+      </div>
+    );
+  }
   
-  return (
-    <div>
-      <GlobalNav />
-      {routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)}
-      {/* {path === '/' && <Redirect to="/home" />} */}
-    </div>
-  );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Basic);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Basic));

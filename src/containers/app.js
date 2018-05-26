@@ -9,7 +9,7 @@ import ResetPasswd from './User/resetPasswd';
 import GlobalNav from '../components/GlobalNav';
 import User from './Layout/user';
 import Basic from './Layout/basic';
-
+// import Post from './Home/post';
 const routes = [
   {
     path: "/",
@@ -17,12 +17,16 @@ const routes = [
     routes: [
       {
         path: "/home",
-        component: Home
+        component: Home,
       },
       {
         path: "/profile",
         component: Profile
-      }
+      },
+      // {
+      //   path: "/post/:id",
+      //   component: Post
+      // }
     ]
   },
   {

@@ -1,14 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux'
 import { bindActionCreators } from 'redux'
 import GlobalHeader from '../../components/GlobalHeader';
 import PostList from '../../components/Postlist';
-import {
-  login,
-  logout,
-  authority
-} from '../../modules/user';
+import { getTags } from '../../modules/home';
 import './home.css';
 
 const data = [
@@ -26,33 +22,35 @@ const data = [
   }
 ];
 
-const mapStateToProps = state => ({
-  ...state
+const mapStateToProps = ({ user }) => ({
+  user,
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  login: () => dispatch(login()),
-  logout: () => dispatch(logout()),
-  authority: () => dispatch(authority()),
-  changePage: () => push('/about-us')
+  getTags: () => getTags
 }, dispatch);
- 
-class Home extends Component {
-  login = (event) => {
-    this.props.login();
-  }
-  
+
+class Home extends PureComponent {
+// const Home = ({ route, routing, user }) => {
   render() {
+    const { location: { hash }, user, getTags } = this.props;
+    const path = hash.replace('#', '');
+    path === 'topic' && user.email && getTags();
+
     const postList = data.map(({ title, content, tags, url }, index) => (
       <PostList key={index} title={title} content={content} tags={tags} url={url} />
     ));
+
+    
+    const tagList = user.tagList && user.tagList.map(({ tag, id }) => <a key={id}>{tag}</a>)
+  
     return (
       <div className="App">
         <GlobalHeader />
         <nav>
           <ul className="nav-bar">
-            <li><a>首页</a></li>
-            <li><a>话题</a></li>
+            <li><a className={!path ? 'active' : ''} href="#">首页</a></li>
+            <li><a className={path === 'topic' ? 'active' : ''} href="#topic">话题</a></li>
           </ul>
         </nav>
 

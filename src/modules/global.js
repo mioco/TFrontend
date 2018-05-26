@@ -5,6 +5,7 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case 'TOGGLE_NAV': 
+        
       return {
         navActive: !state.navActive,
       }
@@ -14,6 +15,6 @@ export default (state = initialState, action) => {
   }
 }
 
-export const toggleNav = () => dispatch => dispatch({
+export const toggleNav = {
   type: 'TOGGLE_NAV',
-});
+};

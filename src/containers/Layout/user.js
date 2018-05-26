@@ -2,18 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux'
 import { bindActionCreators } from 'redux'
-import PostList from '../../components/Postlist';
-import { login, logout } from '../../modules/user';
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { Route, withRouter } from "react-router-dom";
 import logo from '../../assets/logo.svg';
 import './user.css';
 
-const mapStateToProps = state => ({
-  authority: state.authority
+const mapStateToProps = ({ user }) => ({
+  user
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  login: () => dispatch(login()),
   changePage: () => push('/about-us')
 }, dispatch);
  
@@ -27,17 +24,20 @@ const RouteWithSubRoutes = route => (
   />
 );
 
-const User = ({ routes, routing, match: { path } }) => {
-  console.log(path)
-  return (
-    <div className="user">
-      <div>  
-        <img src={logo} />
-        {routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)}
-        {/* {path === '/user' && <Redirect to="/user/login" />} */}
-      </div>  
-    </div>
-  );
+class User extends Component {
+  render() {
+    const { routes } = this.props;
+    
+    return (
+      <div className="user">
+        <div>  
+          <img alt="logo" src={logo} />
+          {routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)}
+          {/* {path === '/user' && <Redirect to="/user/login" />} */}
+        </div>  
+      </div>
+    );
+  }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(User);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(User));
