@@ -18,30 +18,47 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 }, dispatch);
 
 class Home extends PureComponent {
-  componentWillMount() {
-    this.props.getPages()
+  constructor(props) {
+    super(props);
+    this.state = {
+      tab: 'home',
+    };
   }
+  componentDidMount() {
+    console.log(this.props)
+    this.props.getPages()
+    this.props.getTags()
+  }
+
+  tabChange = tab => this.setState({ tab })
 // const Home = ({ route, routing, user }) => {
   render() {
-    const { location: { hash }, user, getTags, getPages, pageList } = this.props;
-    const path = hash.replace('#', '');
-    console.log(!path, path, pageList)
-    user.email && (path ? getTags() : null);
+    const { location: { hash }, user, pageList } = this.props;
 
     const postList = pageList.map((post, index) => <PostList key={index} post={post} />);
 
     
-    const tagList = user.tagList && user.tagList.map(({ tag, id }) => <a key={id}>{tag}</a>)
+    const tagList = user.tagList
+      ? user.tagList.map(({ tag, id }) => <a key={id}>{tag}</a>)
+      : (<div style={{textAlign: 'center', color: '#9aa6c4'}}>暂时没有订阅话题</div>)
   
     return (
       <div>
         <nav>
           <ul className="nav-bar">
-            <li><a className={!path ? 'active' : ''} href="#">首页</a></li>
-            <li><a className={path === 'topic' ? 'active' : ''} href="#topic">话题</a></li>
+            <li>
+              <a className={this.state.tab === 'home' ? 'active' : ''} onClick={() => this.tabChange('home')}>
+                首页
+              </a>
+            </li>
+            <li>
+              <a className={this.state.tab === 'topic' ? 'active' : ''} onClick={() => this.tabChange('topic')}>
+                话题
+              </a>
+            </li>
           </ul>
         </nav>
-
+        { this.state.tab === 'topic' && tagList }
         {postList}
       </div>
     );

@@ -2,12 +2,14 @@ import * as API from '../utils/api';
 
 const initialState = {
   tagList: [],
-  pageList: []
+  pageList: [],
+  page: {},
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case 'SET_TAG_LIST':
+      console.log(action.payload)  
       return {
         ...state,
         tagList: action.payload
@@ -16,6 +18,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         pageList: action.payload
+      }
+    case 'SET_PAGE':
+      return {
+        ...state,
+        page: action.payload
       }
     default:
       return state
@@ -39,5 +46,13 @@ export const getPages = (dispatch, getState) => {
     .then(list => dispatch({
       type: 'SET_PAGE_LIST',
       payload: list,
+    }));
+}
+
+export const getPage = id => (dispatch) => {
+  return API.getPage(id)
+    .then(p => dispatch({
+      type: 'SET_PAGE',
+      payload: p,
     }));
 }

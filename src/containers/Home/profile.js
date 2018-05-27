@@ -4,7 +4,7 @@ import { push } from 'react-router-redux'
 import { bindActionCreators } from 'redux'
 import PostList from '../../components/Postlist';
 import { getProfile, addSubscriptionUrl } from '../../modules/user';
-import './home.css';
+import './profile.css';
 
 const getHostName = (url) => {
   const match = url.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
@@ -16,8 +16,8 @@ const getHostName = (url) => {
   }
 }
 
-const mapStateToProps = (state) => ({
-  ...state.user,
+const mapStateToProps = ({ user }) => ({
+  ...user,
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -26,9 +26,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   changePage: () => push('/about-us')
 }, dispatch);
  
-const UrlList = ({ tags, url }) => (
+const UrlList = ({ tagTagList, url, id }) => (
   <div>
-    Tags: {tags.map(({ tag, id }) => <a key={id}>{tag}</a>)}
+    Tags: {tagTagList.map(({ tag, id }) => <a key={id}>{tag}</a>)}
     <a href={url}>{getHostName(url)}</a>
   </div>
 )
@@ -43,8 +43,9 @@ class Profile extends Component {
     };
   }
 
-  componentWillMount() {
-    this.props.getProfile();
+  componentDidMount() {
+    console.log(this.props)
+    this.props.email && this.props.getProfile();
   }
 
   addSubscriptionUrl = (e) => {
@@ -58,19 +59,23 @@ class Profile extends Component {
   handleSubmit = () => {
     let lock;
     Object.values(this.state).forEach(i => {
+      console.log(i)
       if (!i) {
         lock = false;
         return;
       }
     })
     
-    lock && this.props.addSubscriptionUrl(this.state);
+    !lock && this.props.addSubscriptionUrl({
+      ...this.state,
+      keywords: this.state.keywords.split(',')
+    });
   }
   
   render() {
     
-    const urlList = this.props.user && this.props.user.urlList.map(({ tags, url }, index) => (
-      <UrlList tags={tags} url={url} />
+    const urlList = this.props.urlTagList && this.props.urlTagList.map((url, index) => (
+      <UrlList url={url} />
     ));
 
     const { url, tempItem1, tempItem2, keywords } = this.state;
@@ -95,8 +100,8 @@ class Profile extends Component {
             关键字:
             <input name="keywords" value={keywords} onChange={this.handleChange} />
           </label>
-          <div onClick={this.handleSubmit}>提交</div>
         </form>
+        <div className="submit" onClick={this.handleSubmit}>添加</div>
       </div>
     );
   }

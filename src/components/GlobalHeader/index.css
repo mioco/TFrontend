@@ -15,10 +15,15 @@ li {
   height: 4rem;
   display: flex;
   justify-content: space-between;
-  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 1;
+  box-shadow: 0 2px 4px #00000050;
 }
 
-.App-header > div:first-child {
+.App-header > .logo {
   display: flex;
 }
 .App-header > div:last-child {
@@ -29,10 +34,11 @@ li {
   border-radius: 50%;
   background-size: cover;
   background-position: center;
-  box-shadow: 0 0 10px #00000030;
+  box-shadow: 0 0 10px #00000050;
 }
 
 .App-title {
   font-size: 1.5em;
   margin: auto 0;
+  color: #fff;
 }

@@ -61,7 +61,7 @@ class Basic extends Component {
   render() {
     const { routes, match: { path }, user, history } = this.props;
     return (
-      <div>
+      <div style={{marginTop: '5rem'}}>
         <GlobalHeader />        
         <GlobalNav />
         {routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)}

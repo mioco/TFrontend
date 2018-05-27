@@ -1,11 +1,16 @@
 import { push } from 'react-router-redux'
 import * as API from '../utils/api';
 
-export default (state = {}, action) => {
+const initState = {
+  urlTagList: [],
+};
+
+export default (state = initState, action) => {
   switch (action.type) {
     case 'SET_USER':
-      console.log(action.payload)
+      console.log(action)  
       return {
+        ...state,
         ...action.payload
       }
     case 'GET_RESET_URL':
@@ -21,8 +26,8 @@ export default (state = {}, action) => {
       return {
         ...state,
         user: {
-          ...state.user,
-          urlList: [...state.user.urlList, action.payload]
+          ...state,
+          urlList: [...state.urlList, action.payload]
         }
       }
     case 'REMOVE_SUBSCRIPTION_URL':
@@ -55,8 +60,7 @@ export const logout = dispatch => {
 export const authority = dispatch => {
   return API.authority()
     .then((res) => {
-      dispatch({ type: 'SET_USER', payload: res })
-      dispatch(push('/home'));
+      dispatch({ type: 'SET_USER', payload: res });
     });
 }
  
@@ -89,10 +93,6 @@ export const removeSubscriptionUrl = (id) => dispatch => {
  
 export const getProfile = (dispatch, getState) => {
   const email = getState().user.email;
-  console.log(getState())
-  if (email) {
-    return
-  }
   return API.getProfile(email)
     .then(payload => dispatch({
       type: 'SET_USER',

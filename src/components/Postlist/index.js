@@ -2,8 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './index.css';
  
-const PostList = ({ post }) => {
-  const { id, title, content, url, tagList } = post;
+const PostList = ({ post: { id, title, content, url, tagList } }) => {
   const tagNodes = tagList.map(({ tag }, index) => <a href={`#topic#tag=${id}`} key={index}>{tag}&nbsp;</a>)
   const getContent = () => {
     if (!content) {

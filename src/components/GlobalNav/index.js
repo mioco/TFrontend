@@ -29,6 +29,7 @@ const GlobalNav = props => {
   }
   return (
     <div className={containerClass}>
+      <div className="close" onClick={props.toggleNav}>×</div>  
       <img src={avatar} />
       <ul>
         <li><Link to="/profile">个人中心</Link></li>

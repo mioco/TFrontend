@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { toggleNav } from '../../modules/global';
 import logo from '../../assets/logo.svg';
 import './index.css';
@@ -20,10 +21,10 @@ class GlobalHeader extends Component {
   render() {
     return (
       <header className="App-header">
-        <div>  
+        <Link className="logo" to="/home">  
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">TReader</h1>
-        </div>
+        </Link>
         <div onClick={this.props.toggleNav} />
       </header>
     );

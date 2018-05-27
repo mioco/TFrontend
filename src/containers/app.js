@@ -10,6 +10,7 @@ import GlobalNav from '../components/GlobalNav';
 import User from './Layout/user';
 import Basic from './Layout/basic';
 import Post from './Home/post';
+import GlobalFooter from '../components/GlobalFooter';
 
 const routes = [
   {
@@ -60,6 +61,7 @@ const App = () => (
   <Router>
     <div>
       {routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)}
+      <GlobalFooter />
     </div>
   </Router>
 );

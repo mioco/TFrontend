@@ -64,3 +64,10 @@ export async function getPages(email) {
 export async function removeSubscriptionUrl(id) {
   return $fetch(`${HOST}/user/removeSubscriptionUrl?id=${id}`);
 }
+
+
+export async function getPage(id) {
+  console.log(id)
+  // return $fetch(`${HOST}/user/webpages?email=${email}`);
+  return require('../mock.json').filter(i => i.id === Number(id))[0];
+}
