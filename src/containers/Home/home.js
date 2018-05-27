@@ -1,13 +1,15 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux'
-import { bindActionCreators } from 'redux'
+import { push } from 'react-router-redux';
+import { withRouter } from 'react-router';
+import { bindActionCreators } from 'redux';
+import GlobalHeader from '../../components/GlobalHeader';
 import PostList from '../../components/Postlist';
 import { getTags, getPages } from '../../modules/home';
 import './home.css';
 
 const mapStateToProps = ({ user, home: { pageList, tagList } }) => ({
-  user,
+  ...user,
   pageList,
   tagList
 })
@@ -17,15 +19,24 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   getPages: () => getPages,
 }, dispatch);
 
-class Home extends PureComponent {
+class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tab: 'home',
     };
   }
-  componentDidMount() {
-    console.log(this.props)
+
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log(nextProps, this.props)
+    const firstP = this.props.pageList[0]
+    return (!firstP || nextProps.pageList[0].id !== firstP.id)
+      // || nextProps.location  
+      || (this.state.tab !== nextState.tab)
+  }
+
+  componentDidUpdate() {
     this.props.getPages()
     this.props.getTags()
   }
@@ -33,18 +44,17 @@ class Home extends PureComponent {
   tabChange = tab => this.setState({ tab })
 // const Home = ({ route, routing, user }) => {
   render() {
-    const { location: { hash }, user, pageList } = this.props;
+    const { location: { hash }, tagList, pageList } = this.props;
 
     const postList = pageList.map((post, index) => <PostList key={index} post={post} />);
 
+    const tagListNode = tagList && tagList.map(({ tag, id }) => (<a key={id}>{tag}</a>))
+    console.log(tagListNode)
     
-    const tagList = user.tagList
-      ? user.tagList.map(({ tag, id }) => <a key={id}>{tag}</a>)
-      : (<div style={{textAlign: 'center', color: '#9aa6c4'}}>暂时没有订阅话题</div>)
-  
     return (
       <div>
-        <nav>
+        <GlobalHeader />        
+        <nav style={{marginTop: '5rem'}}>
           <ul className="nav-bar">
             <li>
               <a className={this.state.tab === 'home' ? 'active' : ''} onClick={() => this.tabChange('home')}>
@@ -58,11 +68,17 @@ class Home extends PureComponent {
             </li>
           </ul>
         </nav>
-        { this.state.tab === 'topic' && tagList }
+        {
+          this.state.tab === 'topic' &&
+          <div className="topic__tags">
+            {tagListNode}
+            {!tagListNode && <div style={{ textAlign: 'center', color: '#9aa6c4' }}>暂时没有订阅话题</div>}
+          </div>
+        }
         {postList}
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));

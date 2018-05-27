@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux'
 import { bindActionCreators } from 'redux'
-import { Route, withRouter } from "react-router-dom";
+import { withRouter } from 'react-router'
+import { Route } from "react-router-dom";
 import logo from '../../assets/logo.svg';
 import './user.css';
 

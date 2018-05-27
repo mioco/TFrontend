@@ -56,7 +56,7 @@ class Login extends React.PureComponent {
             密码:
             <input name="password" type="password" value={password} onChange={this.handleChange} />
           </label>
-          <div onClick={this.handleSubmit}>提交</div>
+          <div onClick={this.handleSubmit} className="submit">提交</div>
           <Link to="/user/regist">立即注册</Link>
         </form>
       </div>

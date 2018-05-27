@@ -12,3 +12,12 @@ a {
   text-decoration: none;
   color: #333;
 }
+
+.submit {
+  text-align: center;
+  padding: 0.5rem;
+  background-color: #5b6371;
+  color: #fff;
+  margin: 1.5rem;
+  border-radius: 0 40% 0 40%;
+}

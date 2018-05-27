@@ -5,7 +5,6 @@ import className from 'classnames';
 import { bindActionCreators } from 'redux'
 import avatar from '../../assets/avatar.png';
 import { logout } from '../../modules/user';
-import { toggleNav } from '../../modules/global';
 import GlobalFooter from '../GlobalFooter';
 import './index.css';
 
@@ -15,7 +14,7 @@ const mapStateToProps = ({ global }) => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   logout: () => logout,
-  toggleNav: () => dispatch(toggleNav)
+  toggleNav: () => ({ type: 'TOGGLE_NAV' })
 }, dispatch);
 
 const GlobalNav = props => {

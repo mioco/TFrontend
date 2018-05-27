@@ -62,7 +62,9 @@ export async function getPages(email) {
 }
 
 export async function removeSubscriptionUrl(id) {
-  return $fetch(`${HOST}/user/removeSubscriptionUrl?id=${id}`);
+  return $fetch(`${HOST}/user/${id}`, {
+    method: 'DELETE'
+  });
 }
 
 

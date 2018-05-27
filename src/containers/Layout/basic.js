@@ -8,7 +8,8 @@ import GlobalHeader from '../../components/GlobalHeader';
 import PostList from '../../components/Postlist';
 import GlobalNav from '../../components/GlobalNav';
 import { login, authority } from '../../modules/user';
-import { BrowserRouter as Router, Route, Redirect, withRouter } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router'
 import { register } from '../../registerServiceWorker'
 
 const mapStateToProps = state => ({
@@ -61,8 +62,7 @@ class Basic extends Component {
   render() {
     const { routes, match: { path }, user, history } = this.props;
     return (
-      <div style={{marginTop: '5rem'}}>
-        <GlobalHeader />        
+      <div>
         <GlobalNav />
         {routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)}
         {/* {path === '/' && <Redirect to="/home" />} */}

@@ -27,7 +27,7 @@ export default (state = initState, action) => {
         ...state,
         user: {
           ...state,
-          urlList: [...state.urlList, action.payload]
+          urlList: [...state.urlTagList, action.payload]
         }
       }
     case 'REMOVE_SUBSCRIPTION_URL':
@@ -51,17 +51,21 @@ export const login = (payload) => dispatch => {
  
 export const logout = dispatch => {
   return API.logout()
-    .then(() => dispatch({
-      type: 'SET_USER',
-      payload: null
-    }));
+    .then(() => {
+      dispatch({
+        type: 'SET_USER',
+        payload: null
+      });
+      dispatch(push('/user/login'));
+    });
 }
 
 export const authority = dispatch => {
   return API.authority()
     .then((res) => {
       dispatch({ type: 'SET_USER', payload: res });
-    });
+    })
+    .catch((err) => {console.log(err)});
 }
  
 export const register = (payload) => dispatch => {

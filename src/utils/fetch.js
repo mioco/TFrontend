@@ -31,6 +31,9 @@ const $fetch = (url, options = {}) => {
       }
       return res.data;
     })
+    .catch(err => {
+      console.log(err)
+    })
 }
 
 export default $fetch;

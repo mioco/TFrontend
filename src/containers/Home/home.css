@@ -19,6 +19,19 @@
 li a.active {
   opacity: 0.5;
 }
+
+.topic__tags {
+  padding: 1rem 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+.topic__tags > a {
+  margin: 0 0.5rem 0.5rem;
+  border: 1px solid #6c7896;
+  padding: 2px 1rem;
+  border-radius: 5%;
+  color: #6c7896;
+}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

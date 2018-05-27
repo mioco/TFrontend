@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux'
 import { bindActionCreators } from 'redux'
 import PostList from '../../components/Postlist';
+import GlobalHeader from '../../components/GlobalHeader';
 import { getProfile, addSubscriptionUrl } from '../../modules/user';
 import './profile.css';
 
@@ -26,10 +27,13 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   changePage: () => push('/about-us')
 }, dispatch);
  
-const UrlList = ({ tagTagList, url, id }) => (
+const UrlList = ({ url: { tagList, url, id } }) => (
   <div>
-    Tags: {tagTagList.map(({ tag, id }) => <a key={id}>{tag}</a>)}
-    <a href={url}>{getHostName(url)}</a>
+    <div>
+      <a href={url}>{getHostName(url)}</a>
+      <div>Tags: {tagList && tagList.map(({ tag, id }) => <a key={id}>{tag}</a>)}</div>
+    </div>
+    <div>×</div>
   </div>
 )
 class Profile extends Component {
@@ -41,11 +45,6 @@ class Profile extends Component {
       tempItem2: '',
       keywords: []
     };
-  }
-
-  componentDidMount() {
-    console.log(this.props)
-    this.props.email && this.props.getProfile();
   }
 
   addSubscriptionUrl = (e) => {
@@ -74,31 +73,31 @@ class Profile extends Component {
   
   render() {
     
+    console.log('taglist', this.props.urlTagList)
     const urlList = this.props.urlTagList && this.props.urlTagList.map((url, index) => (
-      <UrlList url={url} />
+      <UrlList url={url} key={index} />
     ));
 
     const { url, tempItem1, tempItem2, keywords } = this.state;
     return (
-      <div>
-        {urlList}
+      <div style={{marginTop: '5rem'}}>
+        <GlobalHeader />
+        <div className="urlList">
+          {urlList}
+        </div>
 
         <form>
           <label>
-            订阅:
-            <input name="url" value={url} onChange={this.handleChange} />
+            订阅: <input name="url" value={url} onChange={this.handleChange} />
           </label>
           <label>
-            内容模板:
-            <input name="tempItem1" value={tempItem1} onChange={this.handleChange} />
+            内容模板: <input name="tempItem1" value={tempItem1} onChange={this.handleChange} />
           </label>
           <label>
-            内容模板:
-            <input name="tempItem2" value={tempItem2} onChange={this.handleChange} />
+            内容模板: <input name="tempItem2" value={tempItem2} onChange={this.handleChange} />
           </label>
           <label>
-            关键字:
-            <input name="keywords" value={keywords} onChange={this.handleChange} />
+            关键字: <input name="keywords" value={keywords} onChange={this.handleChange} />
           </label>
         </form>
         <div className="submit" onClick={this.handleSubmit}>添加</div>

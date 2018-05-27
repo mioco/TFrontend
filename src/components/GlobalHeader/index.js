@@ -10,7 +10,7 @@ const mapStateToProps = state => ({
 })
  
 const mapDispatchToProps = dispatch => ({
-  toggleNav: () => dispatch(toggleNav)
+  toggleNav: () => dispatch({ type: 'TOGGLE_NAV' })
 })
  
 class GlobalHeader extends Component {

@@ -26,3 +26,29 @@ form input:not([type=submit]) {
   margin: 1.5rem;
   border-radius: 0 40% 0 40%;
 }
+
+.urlList {
+  border-bottom: 1px solid #ddd;
+  padding-top: 3rem;
+}
+.urlList > div {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 2rem;
+}
+
+.urlList > div > div:first-child > a {
+  font-size: 1.2rem;
+}
+
+.urlList > div > div:first-child > div {
+  font-size: 0.8rem;
+  line-height: 2;
+}
+.urlList > div > div:first-child > div a {
+  margin-right: 0.8rem;
+}
+.urlList > div > div:last-child {
+  margin: auto 0;
+  color: red;
+}

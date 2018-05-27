@@ -5,7 +5,7 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case 'TOGGLE_NAV': 
-        
+      console.log(state.navActive)
       return {
         navActive: !state.navActive,
       }
@@ -14,7 +14,3 @@ export default (state = initialState, action) => {
       return state
   }
 }
-
-export const toggleNav = {
-  type: 'TOGGLE_NAV',
-};
