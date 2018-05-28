@@ -53,8 +53,7 @@ class Home extends Component {
     
     return (
       <div>
-        <GlobalHeader />        
-        <nav style={{marginTop: '5rem'}}>
+        <nav>
           <ul className="nav-bar">
             <li>
               <a className={this.state.tab === 'home' ? 'active' : ''} onClick={() => this.tabChange('home')}>

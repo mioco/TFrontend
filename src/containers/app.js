@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 import Home from './Home/home';
 import Profile from './Home/profile';
 import Login from './User/login';
@@ -14,22 +14,16 @@ import GlobalFooter from '../components/GlobalFooter';
 
 const routes = [
   {
-    path: "/",
-    component: Basic,
-    routes: [
-      {
-        path: "/home",
-        component: Home,
-      },
-      {
-        path: "/profile",
-        component: Profile
-      },
-      {
-        path: "/post/:id",
-        component: Post
-      }
-    ]
+    path: "/home",
+    component: Basic(Home),
+  },
+  {
+    path: "/profile",
+    component: Basic(Profile)
+  },
+  {
+    path: "/post/:id",
+    component: Basic(Post)
   },
   {
     path: "/user",
@@ -58,12 +52,11 @@ const RouteWithSubRoutes = route => (
 );
 
 const App = () => (
-  <Router>
-    <div>
-      {routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)}
-      <GlobalFooter />
-    </div>
-  </Router>
+  <div>
+    <Redirect exact path="/" to="/home" />
+    {routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)}
+    <GlobalFooter />
+  </div>
 );
 
 export default App;
