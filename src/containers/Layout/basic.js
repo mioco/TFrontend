@@ -10,55 +10,79 @@ import GlobalNav from '../../components/GlobalNav';
 import { login, authority } from '../../modules/user';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { register } from '../../registerServiceWorker'
+import './basic.css'
 
 const mapStateToProps = state => ({
-    user: state.user,
+  user: state.user,
+  notification: state.global.notification || {}
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     login: () => dispatch(login()),
     authority: () => authority,
-    toLogin: () => push('/user/login')
+    toLogin: () => push('/user/login'),
+    setNotification: ({ text = '', show = false }) => dispatch({
+      type: 'SET_NOTIFICATION',
+      payload: { text, show },
+    })
 }, dispatch);
 
+let stompClient, socket;
+
+const connectWS = (email, context) => {
+  socket = new SockJS('http://118.25.188.125:8080/websocket');
+  stompClient = Stomp.over(socket);
+  stompClient.connect({ email }, frame => {
+    stompClient.subscribe('/user/topic/greetings', greeting => {
+      context.props.setNotification({
+        text: greeting.body,
+        show: true
+      })
+    });
+  });
+}
+
+export const disconnectWS = () => {
+  stompClient.disconnect(() => {})
+  stompClient = null
+  socket = null
+}
+
 export default (C) => connect(mapStateToProps, mapDispatchToProps)(
-    class Basic extends Component {
-        constructor(props) {
-            super(props);
-        }
+  class Basic extends Component {
 
-        componentDidMount() {
-            this.props.authority()
-            .then(() => {
-
-                let stompClient;
-                const socket = new SockJS('http://118.25.188.125:8080/websocket');
-                stompClient = Stomp.over(socket);
-                stompClient.connect(
-                {
-                    email: this.props.user.email
-                },
-                function (frame) {
-                    console.log('Connected: ' + frame);
-                    stompClient.subscribe('/user/topic/greetings', function (greeting) {
-                        console.log(greeting.body)
-                    });
-                }
-                );
-            })  
-            .catch(() => this.props.toLogin());
-        }
-
-        render() {
-            const { routes, match: { path }, user, history } = this.props;
-            return (
-              <div style={{marginTop: '5rem'}}>
-                <GlobalHeader />        
-                
-                <GlobalNav />
-                <C { ...this.props }/>
-            </div>
-            );
-        }
+    constructor(props) {
+      super(props);
     }
+
+    componentDidMount() {      
+      if (this.props.user.isLogin) {
+        if (stompClient && socket) return
+        connectWS(this.props.user.email)
+        return
+      }
+
+      this.props.authority()
+      .then(() => {
+        if (stompClient && socket) return
+        connectWS(this.props.user.email, this)
+      })
+      .catch(e => disconnectWS())
+    }
+
+    render() {
+      const { routes, match: { path }, user, history } = this.props;
+      return (
+        <div style={{marginTop: '5rem'}}>
+          <GlobalHeader />        
+          <GlobalNav />
+          <section 
+            className={'notification ' + (!this.props.notification.show ? 'hide' : '')}>
+            { this.props.notification.text }
+          </section>
+          <C { ...this.props }/>
+        </div>
+      );
+    }
+  }
 );

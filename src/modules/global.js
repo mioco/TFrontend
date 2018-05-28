@@ -1,5 +1,9 @@
 const initialState = {
   navActive: false,
+  notification: {
+    text: '',
+    show: false
+  }
 }
 
 export default (state = initialState, action) => {
@@ -9,7 +13,11 @@ export default (state = initialState, action) => {
       return {
         navActive: !state.navActive,
       }
-
+    case 'SET_NOTIFICATION': 
+      return {
+        ...state,
+        notification: action.payload,
+      }  
     default:
       return state
   }

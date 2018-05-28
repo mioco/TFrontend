@@ -15,11 +15,12 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 }, dispatch);
 
 class Post extends React.PureComponent {
+  
   componentWillMount() {
     const id = this.props.match.params.id;
-    this.props.getPage(id);
+    this.props.isLogin && this.props.getPage(id);
   }
-// const Post = ({title, content, url, tags}) => {
+
   render() {
     const { tagList, id, content, title, url } = this.props.page;
     const tagNodes = tagList && tagList.map(({ tag }, index) => <a key={index}>{tag}</a>)
