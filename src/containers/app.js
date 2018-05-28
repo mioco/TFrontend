@@ -53,7 +53,7 @@ const RouteWithSubRoutes = route => (
 
 const App = () => (
   <div>
-    <Redirect exact path="/" to="/home" />
+    <Route exact path="/" render={() => <Redirect to="/home" />}/>
     {routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)}
     <GlobalFooter />
   </div>

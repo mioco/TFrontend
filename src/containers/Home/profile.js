@@ -24,7 +24,11 @@ const mapStateToProps = ({ user }) => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
   getProfile: () => getProfile,
   addSubscriptionUrl: (payload) => addSubscriptionUrl(payload),
-  changePage: () => push('/about-us')
+  changePage: () => push('/about-us'),
+  setNotification: ({ text = '', show = false }) => dispatch({
+    type: 'SET_NOTIFICATION',
+    payload: { text, show },
+  })
 }, dispatch);
  
 const UrlList = ({ url: { tagList, url, id } }) => (
@@ -68,7 +72,7 @@ class Profile extends Component {
     !lock && this.props.addSubscriptionUrl({
       ...this.state,
       keywords: this.state.keywords.split(',')
-    });
+    })
   }
   
   render() {

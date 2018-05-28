@@ -1,5 +1,6 @@
 import { push } from 'react-router-redux'
 import * as API from '../utils/api';
+import { disconnectWS } from '../containers/Layout/basic'
 
 const initState = {
   urlTagList: [],
@@ -11,7 +12,8 @@ export default (state = initState, action) => {
       console.log(action)  
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
+        isLogin: !!action.payload
       }
     case 'GET_RESET_URL':
       return {
@@ -52,6 +54,7 @@ export const login = (payload) => dispatch => {
 export const logout = dispatch => {
   return API.logout()
     .then(() => {
+      disconnectWS()
       dispatch({
         type: 'SET_USER',
         payload: null
@@ -65,7 +68,10 @@ export const authority = dispatch => {
     .then((res) => {
       dispatch({ type: 'SET_USER', payload: res });
     })
-    .catch((err) => {console.log(err)});
+    .catch(e => {
+      dispatch(push('/user/login'))
+      throw e
+    })
 }
  
 export const register = (payload) => dispatch => {

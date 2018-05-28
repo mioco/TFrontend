@@ -8,7 +8,7 @@ import PostList from '../../components/Postlist';
 import { getTags, getPages } from '../../modules/home';
 import './home.css';
 
-const mapStateToProps = ({ user, home: { pageList, tagList } }) => ({
+const mapStateToProps = ({ user, home: { pageList, tagList }, isLogin }) => ({
   ...user,
   pageList,
   tagList
@@ -27,7 +27,6 @@ class Home extends Component {
     };
   }
 
-
   shouldComponentUpdate(nextProps, nextState) {
     console.log(nextProps, this.props)
     const firstP = this.props.pageList[0]
@@ -37,12 +36,14 @@ class Home extends Component {
   }
 
   componentDidUpdate() {
-    this.props.getPages()
-    this.props.getTags()
+    if (this.props.isLogin) {
+      this.props.getPages()
+      this.props.getTags()
+    }
   }
 
   tabChange = tab => this.setState({ tab })
-// const Home = ({ route, routing, user }) => {
+
   render() {
     const { location: { hash }, tagList, pageList } = this.props;
 
@@ -80,4 +81,4 @@ class Home extends Component {
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

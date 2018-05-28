@@ -36,7 +36,8 @@ export const getTags = (dispatch, getState) => {
     .then(tagList => dispatch({
       type: 'SET_TAG_LIST',
       payload: tagList,
-    }));
+    }))
+    .catch(e => console.log(e))
 }
 
 export const getPages = (dispatch, getState) => {
@@ -46,7 +47,8 @@ export const getPages = (dispatch, getState) => {
     .then(list => dispatch({
       type: 'SET_PAGE_LIST',
       payload: list,
-    }));
+    }))
+    .catch(e => console.log(e))
 }
 
 export const getPage = id => (dispatch) => {
@@ -54,5 +56,6 @@ export const getPage = id => (dispatch) => {
     .then(p => dispatch({
       type: 'SET_PAGE',
       payload: p,
-    }));
+    }))
+    .catch(e => console.log(e))
 }
